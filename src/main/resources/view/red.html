@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.js">
+        $(document).ready(function () {
+            for (var i=1;i<=3000;i++){
+                $.post({
+                    url:"http://localhost:8080/user/grapRedPacket?redPacketId=5&userId="+i,
+                    success:function (result) {
+
+                    }
+
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

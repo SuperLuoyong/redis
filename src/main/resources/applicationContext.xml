@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="50"/>
+        <property name="maxTotal" value="100"/>
+        <property name="maxWaitMillis" value="20000"/>
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="port" value="6379"/>
+<!--        <property name="password" value="123456"/>-->
+        <property name="poolConfig" ref="poolConfig"/>
+    </bean>
+
+    <bean id="jdkSerializer" class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+    <bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="valueSerializer" ref="jdkSerializer"/>
+        <property name="keySerializer" ref="stringSerializer"/>
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="username" value="luoyong"/>
+        <property name="password" value="luoanyuan"/>
+        <property name="driverClass" value="org.mariadb.jdbc.Driver"/>
+        <property name="url" value="jdbc:mariadb://localhost:3306/redis"/>
+    </bean>
+
+    <bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+    </bean>
+
+</beans>
